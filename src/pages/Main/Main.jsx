@@ -1,4 +1,11 @@
-import { Avatar, ChatForm, Chats, ChatTitle, Search } from '../../components';
+import {
+  Avatar,
+  ChatForm,
+  Chats,
+  ChatTitle,
+  Search,
+  Conversation,
+} from '../../components';
 
 import './Main.scss';
 
@@ -21,7 +28,7 @@ const Main = () => {
       <div className="main__body">
         <ChatTitle name="Alica Mina" />
         <div className="main__conversation">
-          Conversation{/* <Conversation /> */}
+          <Conversation />
         </div>
         <ChatForm />
       </div>
