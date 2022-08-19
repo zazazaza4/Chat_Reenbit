@@ -1,22 +1,36 @@
+@import '../../styles/variables.scss';
+
 .chat {
   display: flex;
   justify-content: start;
   align-items: center;
-
-  &__avatar {
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+  gap: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
 
   &__content {
+    flex-grow: 1;
   }
 
   &__name {
+    font-size: 16px;
+    color: $color-grey-400;
   }
   &__lastMsg {
+    font-size: 14px;
+    color: $color-grey-500;
   }
   &__date {
+    color: $color-black;
   }
+}
+
+.line {
+  border: 0;
+  height: 1px;
+  background: $color-black;
+  opacity: 0.5;
+
+  margin-top: 50px;
 }

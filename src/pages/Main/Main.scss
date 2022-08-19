@@ -1,30 +1,50 @@
 @import '../../styles/variables.scss';
 
 .main {
+  height: 100vh;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 160px;
+  grid-template-columns: 1fr 2fr;
   grid-template-areas:
     'search  body'
     'chats  body';
 
+  & > div {
+    border: 1px solid $color-grey-100;
+  }
+
   &__search {
     grid-area: search;
-    height: 150px;
+    height: 120px;
+    padding: 20px 30px;
+    background: $color-grey-200;
 
-    background: $color-gray-200;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__chats {
     grid-area: chats;
-    overflow: hidden;
+    overflow-x: scroll;
     background: $color-white-100;
 
     .chats__title {
       color: $color-blue;
+      font-size: 36px;
+      font-weight: 500;
+      padding: 40px 30px;
     }
   }
   &__body {
     grid-area: body;
     background: $color-white-200;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__conversation {
+    flex-grow: 1;
   }
 }

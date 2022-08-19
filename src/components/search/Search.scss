@@ -1,0 +1,28 @@
+@import '../../styles/variables.scss';
+
+.search {
+  display: flex;
+  background-color: $color-white-200;
+  border: 1px solid $color-grey-600;
+  border-radius: 20px;
+
+  margin-left: 40px;
+  margin-right: 40px;
+
+  padding-left: 10px;
+
+  img {
+    width: 20px;
+    height: 40px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    color: $color-grey-400;
+    outline: none;
+  }
+}

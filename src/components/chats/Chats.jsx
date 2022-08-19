@@ -42,6 +42,30 @@ const data = [
     online: true,
     avatar: '',
   },
+  {
+    id: 5,
+    name: 'Alica Freeman',
+    lastMsg: 'You are the worst!',
+    date: 'Jul 12, 2017',
+    online: true,
+    avatar: '',
+  },
+  {
+    id: 6,
+    name: 'Alica Freeman',
+    lastMsg: 'You are the worst!',
+    date: 'Jul 12, 2017',
+    online: true,
+    avatar: '',
+  },
+  {
+    id: 7,
+    name: 'Alica Freeman',
+    lastMsg: 'You are the worst!',
+    date: 'Jul 12, 2017',
+    online: true,
+    avatar: '',
+  },
 ];
 
 const Chats = () => {
@@ -52,7 +76,7 @@ const Chats = () => {
   }, []);
 
   return (
-    <ul>
+    <ul className='chats__list'>
       {chatArray.map((chat) => {
         return <ItemChats key={chat.id} {...chat} />;
       })}
