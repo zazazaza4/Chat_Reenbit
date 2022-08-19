@@ -1,3 +1,5 @@
+import SendIcon from './send.svg';
+
 import './ChatForm.scss';
 
 const ChatForm = ({ ...props }) => {
@@ -6,10 +8,12 @@ const ChatForm = ({ ...props }) => {
       <div className="message__box">
         <textarea
           type="text"
-          class="message__input"
+          className="message__input"
           placeholder="Type message..."
         ></textarea>
-        <button type="submit" class="message__submit"></button>
+        <button type="submit" className="message__submit">
+          <img src={SendIcon} alt=">" />
+        </button>
       </div>
     </form>
   );

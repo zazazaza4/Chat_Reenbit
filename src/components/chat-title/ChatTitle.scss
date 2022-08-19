@@ -1,0 +1,19 @@
+@import '../../styles/variables.scss';
+
+.chatTitle {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+
+  background-color: $color-grey-200;
+  border-bottom: 1px solid $color-grey-100;
+
+  padding-left: 20px;
+  padding-right: 20px;
+
+  &__name {
+    font-weight: normal;
+    font-size: 30px;
+  }
+}

@@ -1,8 +1,9 @@
 import Mark from './check.svg';
+import defaultAvatar from '../../assets/withoutPhoto.png';
 
 import './Avatar.scss';
 
-const Avatar = ({ avatar, online }) => {
+const Avatar = ({ avatar = defaultAvatar, online = false }) => {
   return (
     <div className="avatar">
       <img src={avatar} alt="avatar" />

@@ -19,7 +19,7 @@ const Main = () => {
         <Chats />
       </div>
       <div className="main__body">
-        <ChatTitle />
+        <ChatTitle name="Alica Mina" />
         <div className="main__conversation">
           Conversation{/* <Conversation /> */}
         </div>
