@@ -16,4 +16,10 @@
     font-weight: normal;
     font-size: 30px;
   }
+
+  @media (max-width: 400px) {
+    &__name {
+      font-size: 20px;
+    }
+  }
 }

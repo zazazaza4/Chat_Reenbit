@@ -27,14 +27,15 @@
 
   &__chats {
     grid-area: chats;
+
     overflow-x: scroll;
     background: $color-white-100;
 
     .chats__title {
       color: $color-blue;
-      font-size: 36px;
+      font-size: 24px;
       font-weight: 500;
-      padding: 40px 30px;
+      padding: 20px 30px;
     }
   }
   &__body {
@@ -46,5 +47,41 @@
 
   &__conversation {
     flex-grow: 1;
+    padding: 10px;
+    margin: 0;
+    list-style: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: transparent;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-rows: 70px;
+    grid-auto-rows: calc(100vh - 70px);
+    grid-template-areas:
+      'search  search'
+      'chats  body';
+
+    &__search {
+      height: 30px;
+
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
+
+    &__avatar {
+      flex-shrink: 0;
+    }
+    &__chats {
+      .chats__title {
+        padding: 0;
+        text-align: center;
+      }
+    }
+  }
+
+  @media (max-width: 530px) {
+    grid-template-columns: 80px auto;
   }
 }

@@ -1,27 +1,21 @@
 import { useState } from 'react';
+import { trunc } from '../../utils/functions';
 import Avatar from '../avatar/Avatar';
 
 import './ItemChats.scss';
 
-const ItemChats = () => {
-  const [online, setOnline] = useState(true);
-
+const ItemChats = ({ name, avatar, online, lastMsg, date, ...props }) => {
   return (
     <>
-      <li className="chat">
-        <Avatar
-          online
-          avatar={
-            'https://ichef.bbci.co.uk/news/640/cpsprodpb/12E3E/production/_89247377_89247376.jpg'
-          }
-        />
+      <li className="chat" {...props}>
+        <Avatar className="chat__avatar" online={online} avatar={avatar} />
         <div className="chat__content">
-          <h2 className="chat__name">Alica Freeman</h2>
-          <span className="chat__lastMsg">You are the worst!</span>
+          <h2 className="chat__name">{name}</h2>
+          <span className="chat__lastMsg">{trunc(lastMsg, 30)}</span>
         </div>
-        <div className="chat__date">Jul 12, 2017</div>
+        <div className="chat__date">{date}</div>
       </li>
-      <hr className='line'/>
+      <hr className="line" />
     </>
   );
 };

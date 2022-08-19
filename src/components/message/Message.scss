@@ -1,0 +1,50 @@
+@import '../../styles/variables.scss';
+
+.message {
+  display: flex;
+  gap: 20px;
+  padding: 14px;
+  margin: 0 0 25px 0;
+
+  position: relative;
+  clear: both;
+
+  &__self {
+    float: right;
+    color: $color-black;
+
+    .message__content {
+      background-color: $color-grey-700;
+    }
+
+    .message__timestamp {
+      left: 60%;
+    }
+  }
+
+  &__other {
+    float: left;
+    color: $color-white-100;
+
+    .message__content {
+      background-color: $color-black;
+    }
+
+    .message__timestamp {
+      left: 45%;
+    }
+  }
+
+  &__content {
+    border-radius: 20px;
+    padding: 11px 16px;
+  }
+
+  &__timestamp {
+    font-size: 9px;
+    color: $color-grey-500;
+
+    position: absolute;
+    bottom: -8px;
+  }
+}
