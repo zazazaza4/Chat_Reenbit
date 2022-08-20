@@ -1,23 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { users } from '../../data';
+import { getCartFromLS } from '../../utils/getDataFromLS';
 
-const initialState = {
-  users,
-  filteredUsers: users,
-  userSelectedId: null,
-  userTemp: '',
-  usersLoadingStatus: 'loading',
-};
+const initialState = getCartFromLS();
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    setUsers: (state, action) => {
+      state.users = action.payload;
+    },
     selecteUser: (state, action) => {
       state.userSelectedId = action.payload;
     },
     changeUserTemp: (state, action) => {
       state.userTemp = action.payload;
+    },
+    addMessageUser: (state, action) => {
+      const userID = state.users.find((item) => item.id === state.SelectedId);
+
+      if (userID) {
+        state.users[userID].messages = action.payload;
+      }
     },
     searchedUsers: (state) => {
       if (state.userTemp.length === 0) {
@@ -33,7 +37,12 @@ const usersSlice = createSlice({
   },
 });
 
-export const { selecteUser, searchedUsers, changeUserTemp } =
-  usersSlice.actions;
+export const {
+  selecteUser,
+  searchedUsers,
+  changeUserTemp,
+  addMessageUser,
+  setUsers,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

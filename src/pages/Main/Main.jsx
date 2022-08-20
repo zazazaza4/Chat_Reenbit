@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Avatar,
@@ -8,13 +8,19 @@ import {
   Search,
   Message,
 } from '../../components';
+import { addMessageUser, setUsers } from '../../redux/slices/usersSlice';
+import { sortUserByTime } from '../../utils/sortUsers';
 
 import './Main.scss';
 
 const Main = () => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(null);
+  const isMounted = useRef(false);
+
   const { userSelectedId, users } = useSelector((state) => state.users);
+  const { data } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const getUserDataById = () => {
     if (!userSelectedId) {
@@ -26,15 +32,38 @@ const Main = () => {
     setUser(userData);
   };
 
-  useEffect(getUserDataById, [userSelectedId]);
+  const sendUserMessage = (value) => {
+    if (value.content) {
+      const newMessages = [...messages, value];
+      dispatch(addMessageUser(newMessages));
+      setMessages(() => newMessages);
+    }
+  };
 
-  const renderMessages = (messages = []) => {
+  const renderMessages = (messages) => {
     return messages.map((message, index) => {
-      console.log(user.avatar);
       const avatar = user.avatar;
       return <Message key={index} avatar={avatar} {...message} />;
     });
   };
+
+  const getAnswerFromAPI = async () => {
+    const res = await fetch('https://api.chucknorris.io/')
+      .then((res) => res.json())
+      .catch((e) => console.error(e));
+
+    return res;
+  };
+
+  useEffect(getUserDataById, [userSelectedId]);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(users);
+      localStorage.setItem('users', json);
+    }
+    isMounted.current = true;
+  }, [users, messages]);
 
   const messagesElements = renderMessages(messages);
   return (
@@ -42,9 +71,8 @@ const Main = () => {
       <div className="main__search">
         <Avatar
           className="main__avatar"
-          avatar={
-            'https://ichef.bbci.co.uk/news/640/cpsprodpb/12E3E/production/_89247377_89247376.jpg'
-          }
+          avatar={data.profilePic}
+          title={data.name}
         />
         <Search />
       </div>
@@ -55,8 +83,8 @@ const Main = () => {
       {userSelectedId ? (
         <div className="main__body">
           <ChatTitle {...user} />
-          <div className="main__conversation">{messagesElements}</div>
-          <ChatForm />
+          <div className="main__conversation">{renderMessages(messages)}</div>
+          <ChatForm sendUserMessage={sendUserMessage} />
         </div>
       ) : null}
     </div>

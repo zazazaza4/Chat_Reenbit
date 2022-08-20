@@ -1,6 +1,5 @@
 import Mark from './check.svg';
 import defaultAvatar from '../../assets/withoutPhoto.png';
-import cn from 'classnames';
 
 import './Avatar.scss';
 

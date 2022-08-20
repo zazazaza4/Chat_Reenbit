@@ -18,7 +18,7 @@
     }
 
     .message__timestamp {
-      left: 60%;
+      left: 40%;
     }
   }
 
@@ -31,7 +31,7 @@
     }
 
     .message__timestamp {
-      left: 45%;
+      left: 50%;
     }
   }
 
@@ -41,6 +41,7 @@
   }
 
   &__timestamp {
+    width: 74px;
     font-size: 9px;
     color: $color-grey-500;
 

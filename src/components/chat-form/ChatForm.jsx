@@ -3,17 +3,17 @@ import SendIcon from './send.svg';
 
 import './ChatForm.scss';
 
-const ChatForm = () => {
-  const [value, setValue] = useState('&pg');
+const ChatForm = ({ sendUserMessage }) => {
+  const [value, setValue] = useState('');
 
   const sendMessage = () => {
     const data = {
-      selfOrOther: true,
+      selfOrOther: 'self',
       content: value,
       time: new Date(),
     };
 
-    console.log(data);
+    sendUserMessage(data);
     setValue('');
   };
 
@@ -22,11 +22,6 @@ const ChatForm = () => {
       <div className="form__box">
         <textarea
           value={value}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              sendMessage(null);
-            }
-          }}
           onChange={(e) => setValue(e.target.value)}
           type="text"
           className="form__input"

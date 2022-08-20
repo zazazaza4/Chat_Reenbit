@@ -1,0 +1,42 @@
+@import '../../styles/variables.scss';
+
+.login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: $color-white-100;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    background-color: $color-grey-100;
+    transition: all 0.2s;
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-grey-500;
+    }
+
+    &:active {
+      background-color: $color-grey-100;
+    }
+  }
+
+  &__text {
+    font-size: 24px;
+    color: $color-black;
+  }
+
+  span,
+  img {
+    display: block;
+  }
+}
