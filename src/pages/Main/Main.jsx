@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,8 +9,7 @@ import {
   Search,
   Message,
 } from '../../components';
-import { addMessageUser, setUsers } from '../../redux/slices/usersSlice';
-import { sortUserByTime } from '../../utils/sortUsers';
+import { addMessageUser } from '../../redux/slices/usersSlice';
 
 import './Main.scss';
 
@@ -18,8 +18,10 @@ const Main = () => {
   const [user, setUser] = useState(null);
   const isMounted = useRef(false);
 
+  const auth = getAuth();
+  const data = auth.currentUser;
+
   const { userSelectedId, users } = useSelector((state) => state.users);
-  const { data } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const getUserDataById = () => {
@@ -65,14 +67,14 @@ const Main = () => {
     isMounted.current = true;
   }, [users, messages]);
 
-  const messagesElements = renderMessages(messages);
+  const messagesElements = useMemo(() => renderMessages(messages), [messages]);
   return (
     <div className="main">
       <div className="main__search">
         <Avatar
           className="main__avatar"
-          avatar={data.profilePic}
-          title={data.name}
+          avatar={data?.photoURL || ''}
+          title={data?.displayName || ''}
         />
         <Search />
       </div>
@@ -83,7 +85,7 @@ const Main = () => {
       {userSelectedId ? (
         <div className="main__body">
           <ChatTitle {...user} />
-          <div className="main__conversation">{renderMessages(messages)}</div>
+          <div className="main__conversation">{messagesElements}</div>
           <ChatForm sendUserMessage={sendUserMessage} />
         </div>
       ) : null}

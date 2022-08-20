@@ -1,13 +1,18 @@
-import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { selectIsAuth } from '../redux/slices/authSlice';
 import { privateRoutes, publicRoutes } from '../routes/routes';
 import { MAIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 
 const AppRouter = () => {
-  const isAuth = useSelector(selectIsAuth);
+  const [isUser, setUser] = useState(null);
+  const auth = getAuth();
 
-  return isAuth ? (
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => setUser(!!user));
+  }, []);
+
+  return isUser !== null ? (
     <Routes>
       {privateRoutes.map(({ path, Component }) => {
         return <Route key={path} path={path} element={<Component />} />;

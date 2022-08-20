@@ -7,7 +7,11 @@ import './Chats.scss';
 
 const Chats = () => {
   const [chatArray, setChatArray] = useState([]);
-  const { userTemp: temp, filteredUsers } = useSelector((state) => state.users);
+  const {
+    userTemp: temp,
+    filteredUsers,
+    users,
+  } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {

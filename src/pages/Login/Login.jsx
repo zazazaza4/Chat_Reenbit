@@ -3,7 +3,7 @@ import googleIcon from '../../assets/google.svg';
 import { useDispatch } from 'react-redux';
 
 import './Login.scss';
-import { signIn } from '../../redux/slices/authSlice';
+// import { signIn } from '../../redux/slices/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Login = () => {
         const name = result.user.displayName;
         const profilePic = result.user.photoURL;
 
-        dispatch(signIn({ name, profilePic }));
+        // dispatch(signIn({ name, profilePic }));
       })
       .catch((error) => {
         console.log(error);

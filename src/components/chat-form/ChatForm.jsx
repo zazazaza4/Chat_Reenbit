@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SendIcon from './send.svg';
+import { nanoid } from 'nanoid';
 
 import './ChatForm.scss';
 
@@ -8,9 +9,10 @@ const ChatForm = ({ sendUserMessage }) => {
 
   const sendMessage = () => {
     const data = {
+      id: nanoid(),
       selfOrOther: 'self',
       content: value,
-      time: new Date(),
+      date: new Date(),
     };
 
     sendUserMessage(data);
