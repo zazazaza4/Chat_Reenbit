@@ -12,9 +12,11 @@ const Message = ({ selfOrOther, content, date, avatar }) => {
   return (
     <li className={`message message__${selfOrOther}`}>
       {selfOrOther === 'other' && <Avatar avatar={avatar} />}
-      <div className="message__content">{content}</div>
-      <div className="message__timestamp">
-        {format('dd/MM/yy, hh:mm', time)}
+      <div className="message__body">
+        <div className="message__content">{content}</div>
+        <div className="message__timestamp">
+          {format('dd/MM/yy, hh:mm', time)}
+        </div>
       </div>
     </li>
   );

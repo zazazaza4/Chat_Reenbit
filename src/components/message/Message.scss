@@ -18,7 +18,8 @@
     }
 
     .message__timestamp {
-      left: 30%;
+      text-align: right;
+      left: 20%;
     }
   }
 
@@ -31,23 +32,23 @@
     }
 
     .message__timestamp {
-      left: 50%;
+      left: 40%;
     }
   }
 
   &__content {
     border-radius: 20px;
-    padding: 11px 16px;
+    padding: 10px 20px;
 
     max-width: 440px;
+
+    text-align: center;
   }
 
   &__timestamp {
-    width: 74px;
+    width: 80px;
     font-size: 9px;
     color: $color-grey-500;
-
-    position: absolute;
-    bottom: -8px;
+    margin-top: 8px;
   }
 }
