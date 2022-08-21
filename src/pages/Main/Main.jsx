@@ -88,10 +88,11 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if (isLoading === false && answer.status === false && userSelectedId) {
+    if (isLoading === false && answer.status === true && userSelectedId) {
       const idTimeOut = setTimeout(() => {
+        console.log('');
         sendAnswer(answer.id);
-      }, 1000);
+      }, 10000);
 
       return () => clearTimeout(idTimeOut);
     }
