@@ -16,7 +16,6 @@ export const mapReverse = (array, callback) => {
 
   const resultArray = [];
   for (let index = array.length - 1; index >= 0; index--) {
-    console.log(index);
     resultArray.push(callback(array[index], index, array));
   }
 

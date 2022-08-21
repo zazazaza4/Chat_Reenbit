@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import SendIcon from './send.svg';
+import { useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 
 import './ChatForm.scss';
 
 const ChatForm = ({ sendUserMessage }) => {
   const [value, setValue] = useState('');
+  const { userSelectedId } = useSelector((state) => state.users);
 
   const sendMessage = () => {
     const data = {
+      userId: userSelectedId,
       id: nanoid(),
       selfOrOther: 'self',
       content: value,
@@ -23,6 +26,12 @@ const ChatForm = ({ sendUserMessage }) => {
     <div className="form">
       <div className="form__box">
         <textarea
+          onKeyDown={(e) => {
+            if (e.code === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           type="text"

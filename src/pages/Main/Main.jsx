@@ -16,7 +16,8 @@ import './Main.scss';
 
 const Main = () => {
   const [messages, setMessages] = useState([]);
-  const [answer, setAnswer] = useState(true);
+  const messagesEndRef = useRef(null);
+  const [answer, setAnswer] = useState({ id: null, status: false });
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const isMounted = useRef(false);
@@ -40,21 +41,24 @@ const Main = () => {
   const sendMessage = (value) => {
     if (value.content) {
       const newMessages = [value, ...messages];
-      dispatch(addMessageUser(newMessages));
+      const id = value.userId;
+      dispatch(addMessageUser({ messages: newMessages, id }));
       dispatch(pushUpUser(user.id));
-      setMessages(() => newMessages);
+
+      if (id === userSelectedId) setMessages(() => newMessages);
 
       if (value.selfOrOther === 'self') {
-        setAnswer(false);
+        setAnswer({ id, status: true });
       }
     }
   };
 
-  const sendAnswer = () => {
+  const sendAnswer = (id) => {
     setIsLoading(true);
     getAnswerFromAPI()
       .then((res) => {
         const value = {
+          userId: id,
           content: res.value,
           selfOrOther: 'other',
           date: new Date(),
@@ -65,7 +69,7 @@ const Main = () => {
       })
       .catch((e) => console.error(e));
     setIsLoading(false);
-    setAnswer(true);
+    setAnswer({ id: null, status: false });
   };
 
   const renderMessages = (messages) => {
@@ -83,14 +87,22 @@ const Main = () => {
     return res;
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
   useEffect(() => {
-    if (isLoading === true && answer === true) return;
+    if (isLoading === true && answer.status === true) return;
 
     const idTimeOut = setTimeout(() => {
-      sendAnswer();
+      sendAnswer(answer.id);
     }, 10000);
 
     return () => clearTimeout(idTimeOut);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answer]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,6 +114,8 @@ const Main = () => {
       localStorage.setItem('users', json);
     }
     isMounted.current = true;
+
+    scrollToBottom();
   }, [users, messages]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +138,9 @@ const Main = () => {
       {userSelectedId ? (
         <div className="main__body">
           <ChatTitle {...user} />
-          <div className="main__conversation">{messagesElements}</div>
+          <div ref={messagesEndRef} className="main__conversation">
+            {messagesElements}
+          </div>
           <ChatForm sendUserMessage={sendMessage} />
         </div>
       ) : null}

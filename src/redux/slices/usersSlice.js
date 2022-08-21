@@ -23,6 +23,7 @@ const usersSlice = createSlice({
           userId = index;
           return true;
         }
+        return false;
       });
 
       const userById = state.users[userId];
@@ -30,16 +31,17 @@ const usersSlice = createSlice({
       state.users.push(userById);
     },
     addMessageUser: (state, action) => {
-      let userID;
+      let userIndex;
       state.users.find((item, index) => {
-        if (item.id === state.userSelectedId) {
-          userID = index;
+        if (item.id === action.payload.id) {
+          userIndex = index;
           return true;
         }
+        return false;
       });
 
-      if (userID || userID === 0) {
-        state.users[userID].messages = action.payload;
+      if (userIndex || userIndex === 0) {
+        state.users[userIndex].messages = action.payload.messages;
       }
     },
   },
