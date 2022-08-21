@@ -21,7 +21,7 @@ const ItemChats = ({ name, avatar, online, lastMsg, date, ...props }) => {
         <Avatar className="chat__avatar" online={online} avatar={avatar} />
         <div className="chat__content">
           <h2 className="chat__name">{trunc(name, 30)}</h2>
-          <span className="chat__lastMsg">{trunc(lastMsg, 30)}</span>
+          <span className="chat__lastMsg">{trunc(lastMsg, 50)}</span>
         </div>
         <div className="chat__date">{time}</div>
       </li>

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCartFromLS } from '../../utils/getDataFromLS';
-import { sortUserByTime } from '../../utils/sortUsers';
 
 const initialState = getCartFromLS();
 
@@ -17,7 +16,19 @@ const usersSlice = createSlice({
     changeUserTemp: (state, action) => {
       state.userTemp = action.payload;
     },
+    pushUpUser: (state, action) => {
+      let userId;
+      state.users.find((item, index) => {
+        if (item.id === action.payload) {
+          userId = index;
+          return true;
+        }
+      });
 
+      const userById = state.users[userId];
+      state.users.splice(userId, 1);
+      state.users.push(userById);
+    },
     addMessageUser: (state, action) => {
       let userID;
       state.users.find((item, index) => {
@@ -27,20 +38,9 @@ const usersSlice = createSlice({
         }
       });
 
-      if (userID || userID == 0) {
+      if (userID || userID === 0) {
         state.users[userID].messages = action.payload;
       }
-    },
-    searchedUsers: (state) => {
-      if (state.userTemp.length < 1) {
-        state.filteredUsers = state.users;
-      }
-
-      const temp = state.userTemp.toLowerCase();
-
-      state.filteredUsers = state.users.filter((item) => {
-        return item.name.toLowerCase().indexOf(temp) > -1;
-      });
     },
   },
 });
@@ -51,7 +51,7 @@ export const {
   changeUserTemp,
   addMessageUser,
   setUsers,
-  sortUsers,
+  pushUpUser,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;

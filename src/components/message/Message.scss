@@ -9,6 +9,10 @@
   position: relative;
   clear: both;
 
+  &__avatar {
+    flex-shrink: 0;
+  }
+
   &__self {
     float: right;
     color: $color-black;
@@ -39,6 +43,7 @@
   &__content {
     border-radius: 20px;
     padding: 10px 20px;
+    word-wrap: break-word;
 
     max-width: 440px;
 
@@ -50,5 +55,11 @@
     font-size: 9px;
     color: $color-grey-500;
     margin-top: 8px;
+  }
+
+  @media (max-width: 640px) {
+    &__content {
+      max-width: 240px;
+    }
   }
 }

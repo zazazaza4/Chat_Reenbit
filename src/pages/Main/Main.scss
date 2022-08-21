@@ -5,6 +5,7 @@
   overflow: hidden;
   display: grid;
   grid-template-rows: 160px;
+  grid-auto-rows: calc(100vh - 160px);
   grid-template-columns: 1fr 2fr;
   grid-template-areas:
     'search  body'

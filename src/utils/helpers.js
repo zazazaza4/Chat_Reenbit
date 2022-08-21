@@ -4,10 +4,24 @@ export function trunc(str, length) {
   }
 
   if (str.length > length) {
-    str = str.slice(length) + '...';
+    return str.slice(0, length) + '...';
   }
   return str;
 }
+
+export const mapReverse = (array, callback) => {
+  if (array.length === 0) {
+    return [];
+  }
+
+  const resultArray = [];
+  for (let index = array.length - 1; index >= 0; index--) {
+    console.log(index);
+    resultArray.push(callback(array[index], index, array));
+  }
+
+  return resultArray;
+};
 
 export const months = [
   'Jan',

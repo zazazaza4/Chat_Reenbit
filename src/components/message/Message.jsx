@@ -11,7 +11,9 @@ const Message = ({ selfOrOther, content, date, avatar }) => {
   const time = date instanceof Date ? date : new Date(date);
   return (
     <li className={`message message__${selfOrOther}`}>
-      {selfOrOther === 'other' && <Avatar avatar={avatar} />}
+      {selfOrOther === 'other' && (
+        <Avatar className="message__avatar" avatar={avatar} />
+      )}
       <div className="message__body">
         <div className="message__content">{content}</div>
         <div className="message__timestamp">
