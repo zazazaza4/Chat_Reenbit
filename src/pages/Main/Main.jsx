@@ -87,21 +87,15 @@ const Main = () => {
     return res;
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  };
-
   useEffect(() => {
-    if (isLoading === true && answer.status === true) return;
+    if (isLoading === false && answer.status === false && userSelectedId) {
+      const idTimeOut = setTimeout(() => {
+        sendAnswer(answer.id);
+      }, 1000);
 
-    const idTimeOut = setTimeout(() => {
-      sendAnswer(answer.id);
-    }, 10000);
+      return () => clearTimeout(idTimeOut);
+    }
 
-    return () => clearTimeout(idTimeOut);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answer]);
 
@@ -114,8 +108,6 @@ const Main = () => {
       localStorage.setItem('users', json);
     }
     isMounted.current = true;
-
-    scrollToBottom();
   }, [users, messages]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
