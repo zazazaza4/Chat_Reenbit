@@ -22,6 +22,12 @@ export const mapReverse = (array, callback) => {
   return resultArray;
 };
 
+export function sleeper(ms) {
+  return function (x) {
+    return new Promise((resolve) => setTimeout(() => resolve(x), ms));
+  };
+}
+
 export const months = [
   'Jan',
   'Feb',

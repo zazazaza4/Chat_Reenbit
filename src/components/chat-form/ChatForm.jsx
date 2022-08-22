@@ -36,7 +36,7 @@ const ChatForm = ({ sendUserMessage }) => {
           onChange={(e) => setValue(e.target.value)}
           type="text"
           className="form__input"
-          placeholder="Type message..."
+          placeholder="Type your message"
         ></textarea>
         <button onClick={sendMessage} className="form__submit">
           <img src={SendIcon} alt=">" />

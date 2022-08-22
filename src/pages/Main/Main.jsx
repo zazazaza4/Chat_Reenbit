@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Avatar,
@@ -7,19 +7,17 @@ import {
   Chats,
   ChatTitle,
   Search,
-  Message,
+  Conversation,
 } from '../../components';
+
 import { addMessageUser, pushUpUser } from '../../redux/slices/usersSlice';
-import { mapReverse } from '../../utils/helpers';
 
 import './Main.scss';
 
 const Main = () => {
-  const [messages, setMessages] = useState([]);
-  const messagesEndRef = useRef(null);
-  const [answer, setAnswer] = useState({ id: null, status: false });
-  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [answer, setAnswer] = useState(null);
+  const [messages, setMessages] = useState([]);
   const isMounted = useRef(false);
 
   const auth = getAuth();
@@ -34,74 +32,27 @@ const Main = () => {
     }
 
     const userData = users.find((item) => item.id === userSelectedId);
-    setMessages(userData.messages);
     setUser(userData);
+    setMessages(userData.messages);
   };
 
   const sendMessage = (value) => {
     if (value.content) {
-      const newMessages = [value, ...messages];
+      const newMessages = [value, ...user.messages];
       const id = value.userId;
       dispatch(addMessageUser({ messages: newMessages, id }));
-      dispatch(pushUpUser(user.id));
-
-      if (id === userSelectedId) setMessages(() => newMessages);
+      dispatch(pushUpUser(id));
 
       if (value.selfOrOther === 'self') {
-        setAnswer({ id, status: true });
+        setAnswer({ id: user.id, img: user.avatar });
+      } else {
+        setAnswer(null);
       }
     }
   };
 
-  const sendAnswer = (id) => {
-    setIsLoading(true);
-    getAnswerFromAPI()
-      .then((res) => {
-        const value = {
-          userId: id,
-          content: res.value,
-          selfOrOther: 'other',
-          date: new Date(),
-          avatar: user.avatar,
-        };
-
-        sendMessage(value);
-      })
-      .catch((e) => console.error(e));
-    setIsLoading(false);
-    setAnswer({ id: null, status: false });
-  };
-
-  const renderMessages = (messages) => {
-    return mapReverse(messages, (message, index) => {
-      const avatar = user.avatar;
-      return <Message key={index} avatar={avatar} {...message} />;
-    });
-  };
-
-  const getAnswerFromAPI = async () => {
-    const res = await fetch('https://api.chucknorris.io/jokes/random')
-      .then((res) => res.json())
-      .catch((e) => console.error(e));
-
-    return res;
-  };
-
-  useEffect(() => {
-    if (isLoading === false && answer.status === true && userSelectedId) {
-      const idTimeOut = setTimeout(() => {
-        console.log('');
-        sendAnswer(answer.id);
-      }, 10000);
-
-      return () => clearTimeout(idTimeOut);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answer]);
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(getUserDataById, [userSelectedId]);
+  useEffect(getUserDataById, [userSelectedId, messages, answer]);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -109,10 +60,8 @@ const Main = () => {
       localStorage.setItem('users', json);
     }
     isMounted.current = true;
-  }, [users, messages]);
+  }, [users]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const messagesElements = useMemo(() => renderMessages(messages), [messages]);
   return (
     <div className="main">
       <div className="main__search">
@@ -131,8 +80,13 @@ const Main = () => {
       {userSelectedId ? (
         <div className="main__body">
           <ChatTitle {...user} />
-          <div ref={messagesEndRef} className="main__conversation">
-            {messagesElements}
+          <div className="main__conversation">
+            <Conversation
+              user={user}
+              messages={messages}
+              sendMessage={sendMessage}
+              answer={answer}
+            />
           </div>
           <ChatForm sendUserMessage={sendMessage} />
         </div>

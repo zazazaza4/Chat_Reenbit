@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 const AppRouter = () => {
   const [isUser, setIsUser] = useState(false);
   const auth = getAuth();
-  const user = auth.currentUser;
 
   const checkSignInUser = () => {
     const result = onAuthStateChanged(auth, (user) => {
@@ -21,6 +20,7 @@ const AppRouter = () => {
 
   useEffect(() => {
     checkSignInUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return isUser ? (
