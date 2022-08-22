@@ -44,6 +44,7 @@ const Main = () => {
       dispatch(pushUpUser(id));
 
       if (value.selfOrOther === 'self') {
+        setMessages(newMessages);
         setAnswer({ id: user.id, img: user.avatar });
       } else {
         setAnswer(null);
