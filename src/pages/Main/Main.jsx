@@ -37,14 +37,16 @@ const Main = () => {
   };
 
   const sendMessage = (value) => {
+    console.log(value);
     if (value.content) {
       const newMessages = [value, ...user.messages];
+      console.log(newMessages);
       const id = value.userId;
       dispatch(addMessageUser({ messages: newMessages, id }));
       dispatch(pushUpUser(id));
 
       if (value.selfOrOther === 'self') {
-        setMessages(newMessages);
+        getUserDataById();
         setAnswer({ id: user.id, img: user.avatar });
       } else {
         setAnswer(null);
