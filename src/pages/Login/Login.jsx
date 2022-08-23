@@ -13,7 +13,7 @@ const Login = () => {
       </button>
       <button className="login__button" onClick={signInWithFacebook}>
         <img className="login__icon" src={facebookIcon} alt=""></img>
-        <span className="login__text">Sign in with google</span>
+        <span className="login__text">Sign in with facebook</span>
       </button>
     </div>
   );
