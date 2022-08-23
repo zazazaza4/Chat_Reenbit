@@ -46,16 +46,6 @@
     flex-direction: column;
   }
 
-  &__conversation {
-    flex-grow: 1;
-    padding: 10px;
-    margin: 0;
-    list-style: none;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background: transparent;
-  }
-
   @media (max-width: 640px) {
     grid-template-rows: 70px;
     grid-auto-rows: calc(100vh - 70px);

@@ -37,11 +37,10 @@ const Main = () => {
   };
 
   const sendMessage = (value) => {
-    console.log(value);
     if (value.content) {
       const newMessages = [value, ...user.messages];
-      console.log(newMessages);
       const id = value.userId;
+
       dispatch(addMessageUser({ messages: newMessages, id }));
       dispatch(pushUpUser(id));
 
@@ -83,14 +82,14 @@ const Main = () => {
       {userSelectedId ? (
         <div className="main__body">
           <ChatTitle {...user} />
-          <div className="main__conversation">
-            <Conversation
-              user={user}
-              messages={messages}
-              sendMessage={sendMessage}
-              answer={answer}
-            />
-          </div>
+
+          <Conversation
+            user={user}
+            messages={messages}
+            sendMessage={sendMessage}
+            answer={answer}
+          />
+
           <ChatForm sendUserMessage={sendMessage} />
         </div>
       ) : null}
