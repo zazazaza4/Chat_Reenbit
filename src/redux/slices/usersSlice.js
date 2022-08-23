@@ -16,17 +16,10 @@ const usersSlice = createSlice({
     filterUsers: (state, action) => {
       state.temp = action.payload;
     },
-    pushUpUser: (state, action) => {
-      const index = state.items.findIndex((item) => item.id === action.payload);
-
-      const userById = state.items[index];
-      state.items.splice(index, 1);
-      state.items.push(userById);
-    },
   },
 });
 
-export const { selecteUser, searchedUsers, filterUsers, setUsers, pushUpUser } =
+export const { selecteUser, searchedUsers, filterUsers, setUsers } =
   usersSlice.actions;
 
 export default usersSlice.reducer;
