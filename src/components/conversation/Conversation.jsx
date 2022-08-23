@@ -1,17 +1,18 @@
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { sleeper, mapReverse } from '../../utils/helpers';
+import { sleeper } from '../../utils/helpers';
 import Message from '../message/Message';
 
 import './Conversation.scss';
 
-const Conversation = ({ user, messages, sendMessage, answer }) => {
-  const { userSelectedId, users } = useSelector((state) => state.users);
+const Conversation = ({ sendMessage, messages, isAnswer }) => {
+  const { user } = useSelector((state) => state.users);
+  const { currentDialogId } = useSelector((state) => state.messages);
 
   const getAnswerFromAPI = async () => {
     const res = await fetch('https://api.chucknorris.io/jokes/random')
       .then((res) => res.json())
-      .then(sleeper(2000))
+      .then(sleeper(10000))
       .catch((e) => console.error(e));
 
     return res;
@@ -34,23 +35,21 @@ const Conversation = ({ user, messages, sendMessage, answer }) => {
   };
 
   const renderMessages = (messages = []) => {
-    return mapReverse(messages, (message, index) => {
+    return messages.map((message, index) => {
       const avatar = user.avatar;
       return <Message key={index} avatar={avatar} {...message} />;
     });
   };
 
   useEffect(() => {
-    if (answer) {
-      sendAnswer(answer.id, answer.img);
-    }
+    if (isAnswer === 'other') sendAnswer(user.id, user.avatar);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages, answer]);
+  }, [isAnswer]);
 
   const messagesElements = useMemo(
     () => renderMessages(messages),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [messages, userSelectedId]
+    [messages, currentDialogId]
   );
 
   return <div className="conversation">{messagesElements}</div>;

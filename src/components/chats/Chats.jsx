@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentId } from '../../redux/slices/messagesSlice';
 import { selecteUser } from '../../redux/slices/usersSlice';
+
 import { mapReverse } from '../../utils/helpers';
 import ItemChats from '../Item-chats/ItemChats';
 
@@ -8,17 +10,18 @@ import './Chats.scss';
 
 const Chats = () => {
   const [chatArray, setChatArray] = useState([]);
-  const { userTemp: temp, users } = useSelector((state) => state.users);
+  const { temp, items } = useSelector((state) => state.users);
+  const { messages } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
   const searchedUsers = () => {
     if (temp < 1) {
-      setChatArray(users);
+      setChatArray(items);
     }
 
     const tempLower = temp.toLowerCase();
 
-    const filteredUsers = users.filter((item) => {
+    const filteredUsers = items.filter((item) => {
       return item.name.toLowerCase().indexOf(tempLower) > -1;
     });
 
@@ -28,21 +31,23 @@ const Chats = () => {
   useEffect(() => {
     searchedUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [temp, users]);
+  }, [temp]);
 
   return (
     <ul className="chats__list">
       {mapReverse(chatArray, (chat) => {
-        const lastItem = chat.messages[0];
+        const messageId = messages[chat.id];
+        const lastMessage = messageId[messageId.length - 1];
 
         return (
           <ItemChats
             onClick={() => {
               dispatch(selecteUser(chat.id));
+              dispatch(setCurrentId(chat.id));
             }}
             key={chat.id}
-            lastMsg={lastItem.content}
-            date={lastItem.date}
+            lastMsg={lastMessage.content}
+            date={lastMessage.date}
             {...chat}
           />
         );

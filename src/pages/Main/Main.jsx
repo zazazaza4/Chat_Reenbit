@@ -9,60 +9,45 @@ import {
   Search,
   Conversation,
 } from '../../components';
-
-import { addMessageUser, pushUpUser } from '../../redux/slices/usersSlice';
+import { addMessagesById } from '../../redux/slices/messagesSlice';
 
 import './Main.scss';
 
 const Main = () => {
-  const [user, setUser] = useState(null);
   const [answer, setAnswer] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [isFirst, setIsFirst] = useState(true);
+
   const isMounted = useRef(false);
 
   const auth = getAuth();
   const data = auth.currentUser;
 
-  const { userSelectedId, users } = useSelector((state) => state.users);
+  const { items, user } = useSelector((state) => state.users);
+  const { messages, currentDialogId } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
-
-  const getUserDataById = () => {
-    if (!userSelectedId) {
-      return;
-    }
-
-    const userData = users.find((item) => item.id === userSelectedId);
-    setUser(userData);
-    setMessages(userData.messages);
-  };
 
   const sendMessage = (value) => {
     if (value.content) {
-      const newMessages = [value, ...messages];
-      const id = value.userId;
-
-      dispatch(addMessageUser({ messages: newMessages, id }));
-      dispatch(pushUpUser(id));
-      setMessages(() => newMessages);
-
-      if (value.selfOrOther === 'self') {
-        setAnswer({ id: user.id, img: user.avatar });
-      } else {
-        setAnswer(null);
+      dispatch(addMessagesById({ id: value.userId, message: value }));
+      if ((value.selfOrOther === 'self' && answer === 'self') || isFirst) {
+        setAnswer((answer) => 'other');
+      } else if (value.selfOrOther === 'other' && answer === 'other') {
+        setAnswer((answer) => 'self');
       }
+      setIsFirst(false);
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(getUserDataById, [userSelectedId, messages, answer]);
-
   useEffect(() => {
     if (isMounted.current) {
-      const json = JSON.stringify(users);
-      localStorage.setItem('users', json);
+      const jsonUsers = JSON.stringify(items);
+      const jsonMessages = JSON.stringify(messages);
+
+      localStorage.setItem('users', jsonUsers);
+      localStorage.setItem('messages', jsonMessages);
     }
     isMounted.current = true;
-  }, [users]);
+  }, [items, messages]);
 
   return (
     <div className="main">
@@ -79,15 +64,15 @@ const Main = () => {
         <h2 className="chats__title">Chats</h2>
         <Chats />
       </div>
-      {userSelectedId ? (
+      {currentDialogId ? (
         <div className="main__body">
           <ChatTitle {...user} />
 
           <Conversation
             user={user}
-            messages={messages}
+            messages={messages[currentDialogId]}
             sendMessage={sendMessage}
-            answer={answer}
+            isAnswer={answer}
           />
 
           <ChatForm sendUserMessage={sendMessage} />

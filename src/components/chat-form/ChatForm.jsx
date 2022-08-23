@@ -7,11 +7,11 @@ import './ChatForm.scss';
 
 const ChatForm = ({ sendUserMessage }) => {
   const [value, setValue] = useState('');
-  const { userSelectedId } = useSelector((state) => state.users);
+  const { user } = useSelector((state) => state.users);
 
   const sendMessage = () => {
     const data = {
-      userId: userSelectedId,
+      userId: user.id,
       id: nanoid(),
       selfOrOther: 'self',
       content: value,

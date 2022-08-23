@@ -1,59 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCartFromLS } from '../../utils/getDataFromLS';
+import { getUsersFromLS } from '../../utils/getDataFromLS';
 
-const initialState = getCartFromLS();
+const initialState = getUsersFromLS();
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setUsers: (state, action) => {
-      state.users = action.payload;
+      state.items = action.payload;
     },
     selecteUser: (state, action) => {
-      state.userSelectedId = action.payload;
+      state.user = state.items.find((item) => item.id === action.payload);
     },
-    changeUserTemp: (state, action) => {
-      state.userTemp = action.payload;
+    filterUsers: (state, action) => {
+      state.temp = action.payload;
     },
     pushUpUser: (state, action) => {
-      let userId;
-      state.users.find((item, index) => {
-        if (item.id === action.payload) {
-          userId = index;
-          return true;
-        }
-        return false;
-      });
+      const index = state.items.findIndex((item) => item.id === action.payload);
 
-      const userById = state.users[userId];
-      state.users.splice(userId, 1);
-      state.users.push(userById);
-    },
-    addMessageUser: (state, action) => {
-      let userIndex;
-      state.users.find((item, index) => {
-        if (item.id === action.payload.id) {
-          userIndex = index;
-          return true;
-        }
-        return false;
-      });
-
-      if (userIndex || userIndex === 0) {
-        state.users[userIndex].messages = action.payload.messages;
-      }
+      const userById = state.items[index];
+      state.items.splice(index, 1);
+      state.items.push(userById);
     },
   },
 });
 
-export const {
-  selecteUser,
-  searchedUsers,
-  changeUserTemp,
-  addMessageUser,
-  setUsers,
-  pushUpUser,
-} = usersSlice.actions;
+export const { selecteUser, searchedUsers, filterUsers, setUsers, pushUpUser } =
+  usersSlice.actions;
 
 export default usersSlice.reducer;
