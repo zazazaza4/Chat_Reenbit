@@ -16,10 +16,34 @@ const usersSlice = createSlice({
     filterUsers: (state, action) => {
       state.temp = action.payload;
     },
+    pushUpUser: (state, action) => {
+      const index = state.items.findIndex((item) => item.id === action.payload);
+
+      const userById = state.items[index];
+      state.items.splice(index, 1);
+      state.items.push(userById);
+    },
+    setNotification: (state, action) => {
+      const index = state.items.findIndex((item) => item.id === action.payload);
+
+      state.items[index]['notification'] = true;
+    },
+    deleteNotification: (state, action) => {
+      const index = state.items.findIndex((item) => item.id === action.payload);
+
+      state.items[index]['notification'] = false;
+    },
   },
 });
 
-export const { selecteUser, searchedUsers, filterUsers, setUsers } =
-  usersSlice.actions;
+export const {
+  selecteUser,
+  searchedUsers,
+  filterUsers,
+  setUsers,
+  pushUpUser,
+  setNotification,
+  deleteNotification,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

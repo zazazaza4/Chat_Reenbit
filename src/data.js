@@ -52,7 +52,6 @@ export const usersDate = [
     id: 8,
     name: 'Dylon Serrano',
     online: true,
-    isWait: false,
     avatar:
       'https://images.unsplash.com/photo-1534308143481-c55f00be8bd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njl8fHVzZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
   },

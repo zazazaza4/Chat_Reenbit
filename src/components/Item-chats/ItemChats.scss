@@ -25,6 +25,10 @@
     background: $color-grey-200;
   }
 
+  &__notification {
+    background: $color-grey-700;
+  }
+
   &__content {
     flex-grow: 1;
   }

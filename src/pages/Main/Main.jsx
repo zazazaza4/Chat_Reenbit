@@ -10,6 +10,7 @@ import {
   Conversation,
 } from '../../components';
 import { addMessagesById } from '../../redux/slices/messagesSlice';
+import { pushUpUser, setNotification } from '../../redux/slices/usersSlice';
 
 import './Main.scss';
 
@@ -29,11 +30,18 @@ const Main = () => {
   const sendMessage = (value) => {
     if (value.content) {
       dispatch(addMessagesById({ id: value.userId, message: value }));
+      dispatch(pushUpUser(value.userId));
+
       if ((value.selfOrOther === 'self' && answer === 'self') || isFirst) {
         setAnswer((answer) => 'other');
       } else if (value.selfOrOther === 'other' && answer === 'other') {
         setAnswer((answer) => 'self');
       }
+
+      if (value.selfOrOther === 'other') {
+        dispatch(setNotification(value.userId));
+      }
+
       setIsFirst(false);
     }
   };

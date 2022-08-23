@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentId } from '../../redux/slices/messagesSlice';
-import { selecteUser } from '../../redux/slices/usersSlice';
+import { deleteNotification, selecteUser } from '../../redux/slices/usersSlice';
 
 import { mapReverse } from '../../utils/helpers';
 import ItemChats from '../Item-chats/ItemChats';
@@ -31,7 +31,7 @@ const Chats = () => {
   useEffect(() => {
     searchedUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [temp]);
+  }, [temp, items]);
 
   return (
     <ul className="chats__list">
@@ -44,6 +44,7 @@ const Chats = () => {
             onClick={() => {
               dispatch(selecteUser(chat.id));
               dispatch(setCurrentId(chat.id));
+              dispatch(deleteNotification(chat.id));
             }}
             key={chat.id}
             lastMsg={lastMessage.content}

@@ -5,7 +5,15 @@ import Avatar from '../avatar/Avatar';
 
 import './ItemChats.scss';
 
-const ItemChats = ({ name, avatar, online, lastMsg, date, ...props }) => {
+const ItemChats = ({
+  name,
+  avatar,
+  online,
+  lastMsg,
+  date,
+  notification,
+  ...props
+}) => {
   const onFormatTime = (time) => {
     if (!(time instanceof Date)) {
       time = new Date(time);
@@ -17,7 +25,10 @@ const ItemChats = ({ name, avatar, online, lastMsg, date, ...props }) => {
   const time = onFormatTime(date);
   return (
     <>
-      <li className="chat" {...props}>
+      <li
+        className={`chat  ${notification && 'chat__notification'}`}
+        {...props}
+      >
         <Avatar className="chat__avatar" online={online} avatar={avatar} />
         <div className="chat__content">
           <h2 className="chat__name">{trunc(name, 30)}</h2>
