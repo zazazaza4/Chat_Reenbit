@@ -38,14 +38,14 @@ const Main = () => {
 
   const sendMessage = (value) => {
     if (value.content) {
-      const newMessages = [value, ...user.messages];
+      const newMessages = [value, ...messages];
       const id = value.userId;
 
       dispatch(addMessageUser({ messages: newMessages, id }));
       dispatch(pushUpUser(id));
+      setMessages(() => newMessages);
 
       if (value.selfOrOther === 'self') {
-        getUserDataById();
         setAnswer({ id: user.id, img: user.avatar });
       } else {
         setAnswer(null);
@@ -70,7 +70,7 @@ const Main = () => {
         <Avatar
           online={!!data}
           className="main__avatar"
-          avatar={data?.photoURL || ''}
+          avatar={data?.photoURL}
           title={data?.displayName || ''}
         />
         <Search />

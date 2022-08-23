@@ -6,12 +6,12 @@ import Message from '../message/Message';
 import './Conversation.scss';
 
 const Conversation = ({ user, messages, sendMessage, answer }) => {
-  const { userSelectedId } = useSelector((state) => state.users);
+  const { userSelectedId, users } = useSelector((state) => state.users);
 
   const getAnswerFromAPI = async () => {
     const res = await fetch('https://api.chucknorris.io/jokes/random')
       .then((res) => res.json())
-      .then(sleeper(10000))
+      .then(sleeper(2000))
       .catch((e) => console.error(e));
 
     return res;
