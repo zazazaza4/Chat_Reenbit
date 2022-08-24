@@ -1,13 +1,21 @@
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { sleeper } from '../../utils/helpers';
+import ChatForm from '../chat-form/ChatForm';
 import Message from '../message/Message';
+
+import { addMessagesById } from '../../redux/slices/messagesSlice';
+import { pushUpUser, setNotification } from '../../redux/slices/usersSlice';
 
 import './Conversation.scss';
 
-const Conversation = ({ sendMessage, messages, isAnswer }) => {
+const Conversation = ({ messages }) => {
   const { user } = useSelector((state) => state.users);
   const { currentDialogId } = useSelector((state) => state.messages);
+
+  const bottomRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const getAnswerFromAPI = async () => {
     const res = await fetch('https://api.chucknorris.io/jokes/random')
@@ -34,6 +42,19 @@ const Conversation = ({ sendMessage, messages, isAnswer }) => {
       .catch((e) => console.error(e));
   };
 
+  const sendMessage = (value) => {
+    if (value.content) {
+      dispatch(addMessagesById({ id: value.userId, message: value }));
+      dispatch(pushUpUser(value.userId));
+
+      if (value.selfOrOther === 'self') {
+        sendAnswer(value.userId, user.avatar);
+      } else {
+        dispatch(setNotification(value.userId));
+      }
+    }
+  };
+
   const renderMessages = (messages = []) => {
     return messages.map((message, index) => {
       const avatar = user.avatar;
@@ -42,16 +63,26 @@ const Conversation = ({ sendMessage, messages, isAnswer }) => {
   };
 
   useEffect(() => {
-    if (isAnswer === 'other') sendAnswer(user.id, user.avatar);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAnswer]);
+    bottomRef.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }, [messages]);
 
   const messagesElements = useMemo(
     () => renderMessages(messages),
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [messages, currentDialogId]
   );
 
-  return <div className="conversation">{messagesElements}</div>;
+  return (
+    <>
+      <div className="conversation">
+        {messagesElements}
+        <li ref={bottomRef} className="conversation__end"></li>
+      </div>
+      <ChatForm sendUserMessage={sendMessage} />
+    </>
+  );
 };
 export default Conversation;
