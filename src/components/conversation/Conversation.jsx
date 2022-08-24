@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sleeper } from '../../utils/helpers';
 import ChatForm from '../chat-form/ChatForm';
@@ -10,6 +10,8 @@ import { pushUpUser, setNotification } from '../../redux/slices/usersSlice';
 import './Conversation.scss';
 
 const Conversation = ({ messages }) => {
+  const [isBottom, setIsBottom] = useState(false);
+
   const { user } = useSelector((state) => state.users);
   const { currentDialogId } = useSelector((state) => state.messages);
 
@@ -49,6 +51,7 @@ const Conversation = ({ messages }) => {
 
       if (value.selfOrOther === 'self') {
         sendAnswer(value.userId, user.avatar);
+        setIsBottom(true);
       } else {
         dispatch(setNotification(value.userId));
       }
@@ -63,9 +66,13 @@ const Conversation = ({ messages }) => {
   };
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: 'smooth',
-    });
+    if (isBottom) {
+      bottomRef.current?.scrollIntoView({
+        behavior: 'smooth',
+      });
+      setIsBottom(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   const messagesElements = useMemo(
